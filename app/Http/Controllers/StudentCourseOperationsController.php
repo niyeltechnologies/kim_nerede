@@ -7,6 +7,7 @@ use App\Models\StudentAcess;
 use App\Models\StudentCourse;
 use App\Models\StudentCourseSchedule;
 use App\Models\StudentDetail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,6 +60,7 @@ class StudentCourseOperationsController extends Controller
             'student_name' => $validated["student_name"],
             'student_surname' => $validated["student_surname"],
             'display_color' => $validated["display_color"],
+            'student_owner' => $userID,
         ];
 
         $newStudent = StudentDetail::create($studentDetailLine);
@@ -244,7 +246,7 @@ class StudentCourseOperationsController extends Controller
 
         $newStudentCourseSchedule = StudentCourseSchedule::create($studentCourseScheduleLine);
 
-       $studentCourseDetails = StudentCourse::where('id', $studentCourseID)->get();
+        $studentCourseDetails = StudentCourse::where('id', $studentCourseID)->get();
 
         if (sizeof($studentCourseDetails) > 0) {
             $checkstudentAccess = StudentAcess::where('user_id', $userID)->where('student_detail_id', $studentCourseDetails[0]->student_detail_id)->get();
@@ -259,7 +261,7 @@ class StudentCourseOperationsController extends Controller
 
         return view('student_course_day_add', ['userCourses' => [], 'userStudents' => [],]);
     }
- 
+
     public function addStudentAuthorityScreen($studentID)
     {
 
@@ -277,10 +279,35 @@ class StudentCourseOperationsController extends Controller
     {
         $userID = Auth::id();
 
-        $userCourses = Course::where('user_id', $userID)->get();
-        $userStudents = StudentAcess::with('student_detail')->where('user_id', $userID)->get();
+        $userStudents = StudentAcess::where('user_id', $userID)->get();
 
-        return view('student_course_add', ['userCourses' => $userCourses, 'userStudents' => $userStudents,]);
+        if (sizeof($userStudents) > 0) {
+            $validated = $request->validate([
+                'user_email' => 'required|email',
+            ]);
+
+            $checkUserData = User::where('email', $validated["user_email"])->get();
+            if (sizeof($checkUserData) > 0) {
+                $authorisedUserID = $checkUserData[0]->id;
+
+                $studentAccessLine = [
+                    'student_detail_id' => $authorisedUserID,
+                    'day_of_week' => $studentID,
+                ];
+
+                $newSudentAccess = StudentAcess::create($studentAccessLine);
+
+            } else {
+            }
+        }
+
+          $userID = Auth::id();
+
+        $studentDetails = StudentDetail::where('id', $studentID)->get();
+
+        $studenAuthorities = StudentAcess::where('student_detail_id', $studentID)->get();
+
+
+        return view('student_authority_list', ['studentDetails' => $studentDetails, 'studenAuthorities' => $studenAuthorities]);
     }
-
-   }
+}
