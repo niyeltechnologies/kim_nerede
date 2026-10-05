@@ -267,10 +267,10 @@ class StudentCourseOperationsController extends Controller
 
         $studentDetails = StudentDetail::where('id', $studentID)->get();
 
-        $studenAuthorities = S
+        $studenAuthorities = StudentAcess::where('student_detail_id', $studentID)->get();
 
 
-        return view('student_authority_list', ['studentDetails' => $studentDetails]);
+        return view('student_authority_list', ['studentDetails' => $studentDetails, 'studenAuthorities' => $studenAuthorities]);
     }
 
     public function addStudentAuthoritySave(Request $request, $studentID)
