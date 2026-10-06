@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserContact;
 use App\Models\Course;
 use App\Models\StudentAcess;
 use App\Models\StudentCourse;
@@ -11,6 +12,7 @@ use App\Models\User;
 use App\Models\UserInvite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class StudentCourseOperationsController extends Controller
 {
@@ -292,7 +294,7 @@ class StudentCourseOperationsController extends Controller
             ]);
 
             $checkUserData = User::where('email', $validated["user_email"])->get();
-            if (sizeof($checkUserData) > 0) {
+            /*   if (sizeof($checkUserData) > 0) {
                 $authorisedUserID = $checkUserData[0]->id;
 
                 $studentAccessLine = [
@@ -302,15 +304,30 @@ class StudentCourseOperationsController extends Controller
 
                 $newSudentAccess = StudentAcess::create($studentAccessLine);
             } else {
-                $userInviteLine = [
-                    'user_email' => $validated["user_email"],
-                    'student_detail_id' => $studentID,
-                    'invited_by' => $userID,
-                    'invite_code' => rand(10000, 99999),
-                ];
+             */
+            $inviteCode = rand(10000, 99999);
+            $userInviteLine = [
+                'user_email' => $validated["user_email"],
+                'student_detail_id' => $studentID,
+                'invited_by' => $userID,
+                'invite_code' => rand(10000, 99999),
+            ];
 
-                $newUserInvite = UserInvite::create($userInviteLine);
-            }
+            $newUserInvite = UserInvite::create($userInviteLine);
+
+            $studentDetails = StudentDetail::where('id',  $studentID)->get();
+
+            $userDetails = User::where('id', $userID)->get();
+
+            $maildata = [
+                'name' => $studentDetails[0]->student_name . ' ' . $studentDetails[0]->student_surname,
+                'approval_code' => $inviteCode,
+                'sender' => $userDetails[0]->name,
+            ];
+
+
+            Mail::to($validated["user_email"])->queue(new UserContact($maildata));
+            // }
         }
 
         $userID = Auth::id();
