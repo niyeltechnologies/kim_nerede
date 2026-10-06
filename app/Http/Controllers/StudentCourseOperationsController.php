@@ -8,6 +8,7 @@ use App\Models\StudentCourse;
 use App\Models\StudentCourseSchedule;
 use App\Models\StudentDetail;
 use App\Models\User;
+use App\Models\UserInvite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,7 +26,11 @@ class StudentCourseOperationsController extends Controller
 
         $userStudentCourseSchedules = StudentCourseSchedule::with('student_course')->whereIn('student_course_id', $userStudentCourses)->orderBy('start_time', 'ASC')->orderBy('day_of_week', 'ASC')->get();
 
-        return view('dashboard', ['userStudentCourseSchedules' => $userStudentCourseSchedules]);
+        $useremail = User::where('id', $userID)->get();
+
+        $userStudentAuthorityRequests = UserInvite::with('student_detail')->where('user_email', $useremail[0]->email)->get();
+
+        return view('dashboard', ['userStudentCourseSchedules' => $userStudentCourseSchedules, 'userStudentAuthorityRequests' => $userStudentAuthorityRequests]);
     }
 
     public function getStudentList()
@@ -291,17 +296,24 @@ class StudentCourseOperationsController extends Controller
                 $authorisedUserID = $checkUserData[0]->id;
 
                 $studentAccessLine = [
-                    'student_detail_id' => $authorisedUserID,
-                    'day_of_week' => $studentID,
+                    'user_id' => $authorisedUserID,
+                    'student_detail_id' => $studentID,
                 ];
 
                 $newSudentAccess = StudentAcess::create($studentAccessLine);
-
             } else {
+                $userInviteLine = [
+                    'user_email' => $validated["user_email"],
+                    'student_detail_id' => $studentID,
+                    'invited_by' => $userID,
+                    'invite_code' => rand(10000, 99999),
+                ];
+
+                $newUserInvite = UserInvite::create($userInviteLine);
             }
         }
 
-          $userID = Auth::id();
+        $userID = Auth::id();
 
         $studentDetails = StudentDetail::where('id', $studentID)->get();
 
@@ -309,5 +321,60 @@ class StudentCourseOperationsController extends Controller
 
 
         return view('student_authority_list', ['studentDetails' => $studentDetails, 'studenAuthorities' => $studenAuthorities]);
+    }
+
+    public function getStudentAuthorityList()
+    {
+
+        $userID = Auth::id();
+        $useremail = User::where('id', $userID)->get();
+
+        $userStudentAuthorityRequests = UserInvite::with('student_detail')->where('user_email', $useremail[0]->email)->get();
+
+        return view('student_authority_request_list', ['userStudentAuthorityRequests' => $userStudentAuthorityRequests]);
+    }
+
+    public function addStudentAuthorityApproveScreen($requestID)
+    {
+
+        $userID = Auth::id();
+        $useremail = User::where('id', $userID)->get();
+
+        $userStudentAuthorityRequests = UserInvite::with('student_detail')->where('id', $requestID)->where('user_email', $useremail[0]->email)->get();
+
+        return view('student_authority_approve', ['userStudentAuthorityRequests' => $userStudentAuthorityRequests]);
+    }
+
+
+    public function addStudentAuthorityApproveSave(Request $request, $requestID)
+    {
+        $userID = Auth::id();
+        $useremail = User::where('id', $userID)->get();
+
+        $userStudentAuthorityRequests = UserInvite::where('id', $requestID)->where('user_email', $useremail[0]->email)->where('invite_code', $request['invite_code'])->get();
+
+
+        if (sizeof($userStudentAuthorityRequests) > 0) {
+            $studentID = $userStudentAuthorityRequests[0]->student_detail_id;
+
+
+            $studentAccessLine = [
+                'user_id' => $userID,
+                'student_detail_id' => $studentID,
+            ];
+
+            $newSudentAccess = StudentAcess::create($studentAccessLine);
+
+            $userID = Auth::id();
+
+            $studentDetails = StudentDetail::where('id', $studentID)->get();
+
+            $studenAuthorities = StudentAcess::where('student_detail_id', $studentID)->get();
+
+
+            return view('student_authority_list', ['studentDetails' => $studentDetails, 'studenAuthorities' => $studenAuthorities]);
+        } else {
+            return redirect()->back()->withErrors(['msg' => 'Öğrenci yetki talebi kodunuz geçerli değil!']);
+        }
     }
 }

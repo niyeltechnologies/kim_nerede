@@ -44,7 +44,11 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('Hesabım') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('student_authority_list.show')">
+                            {{ __('Öğrenci Paylaşımları') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -54,7 +58,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('Çıkış Yap') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>

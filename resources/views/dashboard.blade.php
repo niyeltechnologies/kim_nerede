@@ -26,6 +26,56 @@ use Carbon\Carbon;
             </div>
         </div>
     </div>
+    @if(sizeof($userStudentAuthorityRequests)>0)
+        <div class="container pt-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2>Kayıtlı Öğrenci Listesi</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row p-3">
+            <div class="col-12 p-5">
+                <div class="row p-3">
+                    <div class="col-12 text-center">
+                        
+                        <table id="student_details_list_table" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Öğrenci Adı</th>
+                                    <th>Öğrenci Soyadı</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($userStudentAuthorityRequests as $userStudentAuthorityRequest)
+                                <tr
+                                    onclick="">
+                                    @php
+                                    error_log('1');
+                                    @endphp
+                                    <td>{{ $userStudentAuthorityRequest->student_detail->student_name }}
+                                    </td>
+                                    <td>{{ $userStudentAuthorityRequest->student_detail->student_surname }}</td>
+                                    <td>
+                                        <a class="btn btn-primary" href="{{route('add_student_authority_approve.show', $userStudentAuthorityRequest->id)}}">Kabul Et</a>
+                                        <a class="btn btn-danger">Sil</a>
+                                    </td>
+                                </tr>
+                                @php
+                                error_log('4');
+                                @endphp
+                                @endforeach
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <div class="container">
         <div class="row p-3">

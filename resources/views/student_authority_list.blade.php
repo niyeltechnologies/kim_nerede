@@ -72,6 +72,7 @@
                                 <tr>
                                     <th>İsim</th>
                                     <th>e-mail</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>

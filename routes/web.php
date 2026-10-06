@@ -20,6 +20,9 @@ Route::post('/student/add', [StudentCourseOperationsController::class, 'addStude
 Route::get('/student/{id}/auhtority/add', [StudentCourseOperationsController::class, 'addStudentAuthorityScreen'])->middleware(['auth', 'verified'])->name('add_student_authority.show');
 Route::post('/student/{id}/auhtority/add', [StudentCourseOperationsController::class, 'addStudentAuthoritySave'])->middleware(['auth', 'verified'])->name('add_student_authority.save');
 
+Route::get('/student/auhtority/list', [StudentCourseOperationsController::class, 'getStudentAuthorityList'])->middleware(['auth', 'verified'])->name('student_authority_list.show');
+Route::get('/student/{id}/auhtority/approve', [StudentCourseOperationsController::class, 'addStudentAuthorityApproveScreen'])->middleware(['auth', 'verified'])->name('add_student_authority_approve.show');
+Route::post('/student/{id}/auhtority/approve', [StudentCourseOperationsController::class, 'addStudentAuthorityApproveSave'])->middleware(['auth', 'verified'])->name('add_student_authority_approve.save');
 
 Route::get('/courseschedules', [StudentCourseOperationsController::class, 'getStudentCourseList'])->middleware(['auth', 'verified'])->name('student_course_list.show');
 
