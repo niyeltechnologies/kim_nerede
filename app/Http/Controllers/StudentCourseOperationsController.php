@@ -312,7 +312,7 @@ class StudentCourseOperationsController extends Controller
                 'user_email' => $validated["user_email"],
                 'student_detail_id' => $studentID,
                 'invited_by' => $userID,
-                'invite_code' => rand(10000, 99999),
+                'invite_code' => $inviteCode,
             ];
 
             $newUserInvite = UserInvite::create($userInviteLine);
@@ -328,7 +328,8 @@ class StudentCourseOperationsController extends Controller
             ];
 
             try {
-                Mail::to($validated["user_email"])->queue(new UserContact($maildata));
+                //      Mail::to($validated["user_email"])->queue(new UserContact($maildata));
+                Mail::to($validated["user_email"])->send(new UserContact($maildata));
                 Log::info('Email sent successfully', ['to' => $validated["user_email"]]);
             } catch (TransportExceptionInterface $e) {
                 Log::error('Email failed to send', [
