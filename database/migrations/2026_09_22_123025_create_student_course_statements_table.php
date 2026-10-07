@@ -16,8 +16,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(StudentCourse::class);
             $table->date('course_date');
+            $table->time('course_time');
             $table->integer('attended_duration');
             $table->decimal('amount_due');
+            $table->integer('attended')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
