@@ -20,7 +20,7 @@ Schedule::call(function () {
 Schedule::call(function () {
     $today = Carbon::today();
 
-    for ($i = 0; $i < 1; $i++) {
+    for ($i = 0; $i < 2; $i++) {
         $currentDate = $today->copy()->addDays($i);
         $todaysCourses = StudentCourseSchedule::where('day_of_week', $currentDate->isoWeekday())->get();
 
@@ -35,6 +35,7 @@ Schedule::call(function () {
                     'course_date' => $currentDate->format('Y-m-d'),
                     'course_time' => $currCourse->start_time,
                     'amount_due' => $studentCourseDetails[0]->course_price,
+                    'amount_type' => $studentCourseDetails[0]->course_price_type,
                     'attended_duration' => $currCourse->duration,
                     'attended' => 0,
                 ];

@@ -15,6 +15,7 @@ class StudentCourseStatement extends Model
         'course_date',
         'course_time',
         'amount_due',
+        'amount_type',
         'attended_duration',
         'attended'
     ];
