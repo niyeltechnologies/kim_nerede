@@ -12,7 +12,9 @@ use App\Models\User;
 use App\Models\UserInvite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class StudentCourseOperationsController extends Controller
 {
@@ -325,8 +327,17 @@ class StudentCourseOperationsController extends Controller
                 'sender' => $userDetails[0]->name,
             ];
 
+            try {
+                Mail::to($validated["user_email"])->queue(new UserContact($maildata));
+                Log::info('Email sent successfully', ['to' => $validated["user_email"]]);
+            } catch (TransportExceptionInterface $e) {
+                Log::error('Email failed to send', [
+                    'to' => $validated["user_email"],
+                    'error' => $e->getMessage(),
+                ]);
+                return back()->withErrors(['email' => 'E-posta gönderilemedi.']);
+            }
 
-            Mail::to($validated["user_email"])->queue(new UserContact($maildata));
             // }
         }
 
