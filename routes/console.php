@@ -27,7 +27,7 @@ Schedule::call(function () {
         foreach ($todaysCourses as $currCourse) {
             $checkStatement = StudentCourseStatement::where('student_course_id', $currCourse->student_course_id)->where('course_time', $currCourse->start_time)->where('course_date', $currentDate->format('Y-m-d'))->get();
 
-            if (sizeof($checkStatement)) {
+            if (sizeof($checkStatement)==0) {
                 $studentCourseDetails = StudentCourse::where('id', $currCourse->student_course_id)->get();
 
                 $newCourseStatementLine = [
