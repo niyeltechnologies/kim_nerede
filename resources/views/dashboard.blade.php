@@ -26,6 +26,7 @@ use Carbon\Carbon;
             </div>
         </div>
     </div>
+
     @if(sizeof($userStudentAuthorityRequests)>0)
         <div class="container pt-3">
         <div class="row">
@@ -61,6 +62,58 @@ use Carbon\Carbon;
                                     <td>
                                         <a class="btn btn-primary" href="{{route('add_student_authority_approve.show', $userStudentAuthorityRequest->id)}}">Kabul Et</a>
                                         <a class="btn btn-danger">Sil</a>
+                                    </td>
+                                </tr>
+                                @php
+                                error_log('4');
+                                @endphp
+                                @endforeach
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+     @if(sizeof($todaysCourses)>0)
+        <div class="container pt-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2>Bugünkü Kurslar</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row p-3">
+            <div class="col-12 p-5">
+                <div class="row p-3">
+                    <div class="col-12 text-center">
+                        
+                        <table id="todays_courses_list_table" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Kurs Saati</th>
+                                    <th>Öğrenci Adı</th>
+                                    <th>Kurs Adı</th>
+                                    <th>Kurs Veren</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($todaysCourses as $todaysCourse)
+                                <tr
+                                    onclick="">
+                                    @php
+                                    error_log('1');
+                                    @endphp
+                                    <td>{{ $todaysCourse->start_time }}
+                                    </td>
+                                    <td>{{ $todaysCourse->student_course->student_detail->student_name }} {{ $todaysCourse->student_course->student_detail->student_surname }}</td>
+                                    <td>{{ $todaysCourse->student_course->course->course_topic }}
+                                    </td>
+                                    <td>{{ $todaysCourse->student_course->course->course_name }}
                                     </td>
                                 </tr>
                                 @php
@@ -236,3 +289,5 @@ use Carbon\Carbon;
         </div>
     </div>
 </x-app-layout>
+
+todays_courses_list_table

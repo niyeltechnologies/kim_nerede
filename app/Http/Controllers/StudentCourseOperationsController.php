@@ -10,6 +10,7 @@ use App\Models\StudentCourseSchedule;
 use App\Models\StudentDetail;
 use App\Models\User;
 use App\Models\UserInvite;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -26,15 +27,19 @@ class StudentCourseOperationsController extends Controller
 
         $userStudents = StudentAcess::where('user_id', $userID)->get('student_detail_id');
 
+        $today = Carbon::today();
+
         $userStudentCourses = StudentCourse::whereIn('student_detail_id', $userStudents)->get('id');
 
         $userStudentCourseSchedules = StudentCourseSchedule::with('student_course')->whereIn('student_course_id', $userStudentCourses)->orderBy('start_time', 'ASC')->orderBy('day_of_week', 'ASC')->get();
+
+        $todaysCourses = StudentCourseSchedule::with('student_course')->whereIn('student_course_id', $userStudentCourses)->where('day_of_week', $today->isoWeekday())->orderBy('start_time', 'ASC')->get();
 
         $useremail = User::where('id', $userID)->get();
 
         $userStudentAuthorityRequests = UserInvite::with('student_detail')->where('user_email', $useremail[0]->email)->get();
 
-        return view('dashboard', ['userStudentCourseSchedules' => $userStudentCourseSchedules, 'userStudentAuthorityRequests' => $userStudentAuthorityRequests]);
+        return view('dashboard', ['userStudentCourseSchedules' => $userStudentCourseSchedules, 'userStudentAuthorityRequests' => $userStudentAuthorityRequests, 'todaysCourses' => $todaysCourses]);
     }
 
     public function getStudentList()
