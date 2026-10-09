@@ -2,7 +2,7 @@
 <p>Bugün senin ekibin programı şöyle:</p>
 @php
 foreach ($maildata["daily_activities"] as $currActivity) {
-echo '<p><b>' . $currActivity["course_time"]. ':</b> ' . $currActivity["student_name"] . ' (' . $currActivity["course_topic"]
+echo '<p><b>' . $currActivity["course_time"]. '</b> - ' . $currActivity["student_name"] . ' (' . $currActivity["course_topic"]
     . ' - ' . $currActivity["course_name"] . ')';
     }
     @endphp

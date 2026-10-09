@@ -40,7 +40,7 @@ Schedule::call(function () {
             foreach ($todaysCourses as $currCourse) {
 
                 $currCourse = [
-                    'course_time' => substr($currCourse->start_time,0,4),
+                    'course_time' => substr($currCourse->start_time,0,5),
                     'student_name' => $currStudent->student_detail->student_name . ' ' . $currStudent->student_detail->student_surname,
                     'course_topic' => $currCourse->student_course->course->course_topic,
                     'course_name' => $currCourse->student_course->course->course_name
