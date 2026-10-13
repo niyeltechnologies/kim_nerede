@@ -78,7 +78,68 @@ use Carbon\Carbon;
     </div>
     @endif
 
-     @if(sizeof($todaysCourses)>0)
+    @if(sizeof($attendanceList)>0)
+        <div class="container pt-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2>Kayıtlı Öğrenci Listesi</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row p-3">
+            <div class="col-12 p-5">
+                <div class="row p-3">
+                    <div class="col-12 text-center">
+                        
+                        <table id="student_attendance_list_table" class="display" style="width:100%">
+                             <thead>
+                                <tr>
+                                    <th>Öğrenci Adı</th>
+                                    <th>Kurs Adı</th>
+                                    <th>Kurs Veren</th>
+                                    <th>Kurs Tarihi</th>
+                                    <th>Kurs Saati</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($attendanceList as $currentAttendance)
+                                <tr
+                                    onclick="">
+                                    @php
+                                    $courseDateArray = explode('-', $currentAttendance->course_date);
+                                    error_log('1');
+                                    @endphp
+                                    <td>{{ $currentAttendance->student_course->student_detail->student_name }} {{ $currentAttendance->student_course->student_detail->student_surname }}</td>
+                                    <td>{{ $currentAttendance->student_course->course->course_topic }}
+                                    </td>
+                                    <td>{{ $currentAttendance->student_course->course->course_name }}
+                                    </td>
+                                     <td>{{ $courseDateArray[2] }}/{{ $courseDateArray[1] }}/{{ $courseDateArray[0] }}
+                                    </td>
+                                     <td>{{ substr($currentAttendance->course_time, 0, 5) }}
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#attendaceApproveModal" data-action="{{ route('courseschedule_course_day.accept', $currentAttendance->id) }}" data-name="{{ $currentAttendance->student_course->student_detail->student_name }} {{ $currentAttendance->student_course->student_detail->student_surname }}" data-course_name="{{ $currentAttendance->student_course->course->course_name }}" data-time="{{ substr($currentAttendance->course_time, 0, 5) }}" data-date="{{ $courseDateArray[2] }}/{{ $courseDateArray[1] }}/{{ $courseDateArray[0] }}">Gitti</a>
+                                        <a class="btn btn-danger" href="{{route('courseschedule_course_day.reject', $currentAttendance->id)}}">Gitmedi</a>
+                                    </td>
+                                </tr>
+                                @php
+                                error_log('4');
+                                @endphp
+                                @endforeach
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    @if(sizeof($todaysCourses)>0)
         <div class="container pt-3">
         <div class="row">
             <div class="col-12 text-center">
@@ -108,7 +169,7 @@ use Carbon\Carbon;
                                     @php
                                     error_log('1');
                                     @endphp
-                                    <td>{{ $todaysCourse->start_time }}
+                                    <td>{{ substr($todaysCourse->start_time, 0, 5) }}
                                     </td>
                                     <td>{{ $todaysCourse->student_course->student_detail->student_name }} {{ $todaysCourse->student_course->student_detail->student_surname }}</td>
                                     <td>{{ $todaysCourse->student_course->course->course_topic }}
@@ -288,6 +349,35 @@ use Carbon\Carbon;
             </div>
         </div>
     </div>
-</x-app-layout>
 
-todays_courses_list_table
+    <div class="modal fade" id="attendaceApproveModal" tabindex="-1" aria-labelledby="attendaceApproveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST">
+                    @csrf
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="attendaceApproveModalLabel">Add Note</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control @error('title') is-invalid @enderror"
+                                id="title" name="title" value="{{ old('title') }}" required>
+                            @error('title')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</x-app-layout>

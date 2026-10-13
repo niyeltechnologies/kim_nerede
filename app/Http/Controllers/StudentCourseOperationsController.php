@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\StudentAcess;
 use App\Models\StudentCourse;
 use App\Models\StudentCourseSchedule;
+use App\Models\StudentCourseStatement;
 use App\Models\StudentDetail;
 use App\Models\User;
 use App\Models\UserInvite;
@@ -35,11 +36,37 @@ class StudentCourseOperationsController extends Controller
 
         $todaysCourses = StudentCourseSchedule::with('student_course')->whereIn('student_course_id', $userStudentCourses)->where('day_of_week', $today->isoWeekday())->orderBy('start_time', 'ASC')->get();
 
+        $attendanceList = StudentCourseStatement::with('student_course')->whereIn('student_course_id', $userStudentCourses)->where('attended', 0)->orderBy('course_date', 'ASC')->orderBy('course_time', 'ASC')->get();
+
         $useremail = User::where('id', $userID)->get();
 
         $userStudentAuthorityRequests = UserInvite::with('student_detail')->where('user_email', $useremail[0]->email)->get();
 
-        return view('dashboard', ['userStudentCourseSchedules' => $userStudentCourseSchedules, 'userStudentAuthorityRequests' => $userStudentAuthorityRequests, 'todaysCourses' => $todaysCourses]);
+        return view('dashboard', ['userStudentCourseSchedules' => $userStudentCourseSchedules, 'userStudentAuthorityRequests' => $userStudentAuthorityRequests, 'todaysCourses' => $todaysCourses, 'attendanceList' => $attendanceList]);
+    }
+
+   public function getWeeklySchedule()
+    {
+
+        $userID = Auth::id();
+
+        $userStudents = StudentAcess::where('user_id', $userID)->get('student_detail_id');
+
+        $today = Carbon::today();
+
+        $userStudentCourses = StudentCourse::whereIn('student_detail_id', $userStudents)->get('id');
+
+        $userStudentCourseSchedules = StudentCourseSchedule::with('student_course')->whereIn('student_course_id', $userStudentCourses)->orderBy('start_time', 'ASC')->orderBy('day_of_week', 'ASC')->get();
+
+        $todaysCourses = StudentCourseSchedule::with('student_course')->whereIn('student_course_id', $userStudentCourses)->where('day_of_week', $today->isoWeekday())->orderBy('start_time', 'ASC')->get();
+
+        $attendanceList = StudentCourseStatement::with('student_course')->whereIn('student_course_id', $userStudentCourses)->where('attended', 0)->orderBy('course_date', 'ASC')->orderBy('course_time', 'ASC')->get();
+
+        $useremail = User::where('id', $userID)->get();
+
+        $userStudentAuthorityRequests = UserInvite::with('student_detail')->where('user_email', $useremail[0]->email)->get();
+
+        return view('weekly_schedule', ['userStudentCourseSchedules' => $userStudentCourseSchedules, 'userStudentAuthorityRequests' => $userStudentAuthorityRequests, 'todaysCourses' => $todaysCourses, 'attendanceList' => $attendanceList]);
     }
 
     public function getStudentList()
@@ -88,14 +115,7 @@ class StudentCourseOperationsController extends Controller
 
         $newStudentAccess = StudentAcess::create($studentAccessLine);
 
-
-        $userStudents = StudentAcess::where('user_id', $userID)->get('student_detail_id');
-
-        $userStudentCourses = StudentCourse::whereIn('student_detail_id', $userStudents)->get('id');
-
-        $userStudentCourseSchedules = StudentCourseSchedule::with('student_course')->whereIn('student_course_id', $userStudentCourses)->orderBy('start_time', 'ASC')->orderBy('day_of_week', 'ASC')->get();
-
-        return view('dashboard', ['userStudentCourseSchedules' => $userStudentCourseSchedules]);
+        return $this->getDashboard();
     }
 
     public function getCourseList()
@@ -411,4 +431,22 @@ class StudentCourseOperationsController extends Controller
             return redirect()->back()->withErrors(['msg' => 'Öğrenci yetki talebi kodunuz geçerli değil!']);
         }
     }
+
+    public function coursescheduleCourseDayReject($studentAttendaceID)
+    {
+        $userID = Auth::id();
+
+        $userStudents = StudentAcess::where('user_id', $userID)->get('student_detail_id');
+
+        $userStudentCourses = StudentCourse::whereIn('student_detail_id', $userStudents)->get('id');
+
+
+        if (in_array($studentAttendaceID, $userStudentCourses)) {
+            $attendanceList = StudentCourseStatement::find($studentAttendaceID);
+        } else {
+            echo "Not in array";
+        }
+    }
+
+    public function coursescheduleCourseDayAccept() {}
 }

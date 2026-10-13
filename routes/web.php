@@ -24,6 +24,8 @@ Route::get('/student/auhtority/list', [StudentCourseOperationsController::class,
 Route::get('/student/{id}/auhtority/approve', [StudentCourseOperationsController::class, 'addStudentAuthorityApproveScreen'])->middleware(['auth', 'verified'])->name('add_student_authority_approve.show');
 Route::post('/student/{id}/auhtority/approve', [StudentCourseOperationsController::class, 'addStudentAuthorityApproveSave'])->middleware(['auth', 'verified'])->name('add_student_authority_approve.save');
 
+Route::get('/weeklyschedules', [StudentCourseOperationsController::class, 'getWeeklySchedule'])->middleware(['auth', 'verified'])->name('weekly_course_list.show');
+
 Route::get('/courseschedules', [StudentCourseOperationsController::class, 'getStudentCourseList'])->middleware(['auth', 'verified'])->name('student_course_list.show');
 
 Route::get('/courseschedule/add', [StudentCourseOperationsController::class, 'addStudentCourseScreen'])->middleware(['auth', 'verified'])->name('add_student_course.show');
@@ -31,6 +33,9 @@ Route::post('/courseschedule/add', [StudentCourseOperationsController::class, 'a
 
 Route::get('/courseschedule/{id}/day/add', [StudentCourseOperationsController::class, 'addStudentCourseDayScreen'])->middleware(['auth', 'verified'])->name('add_student_course_day.show');
 Route::post('/courseschedule/{id}/day/add', [StudentCourseOperationsController::class, 'addStudentCourseDaySave'])->middleware(['auth', 'verified'])->name('add_student_course_day.save');
+
+Route::get('/courseschedule/course/{id}/reject', [StudentCourseOperationsController::class, 'coursescheduleCourseDayReject'])->middleware(['auth', 'verified'])->name('courseschedule_course_day.reject');
+Route::post('/courseschedule/course/{id}/accept', [StudentCourseOperationsController::class, 'addStudentCourseDaySave'])->middleware(['auth', 'verified'])->name('courseschedule_course_day.accept');
 
 Route::get('/courses', [StudentCourseOperationsController::class, 'getCourseList'])->middleware(['auth', 'verified'])->name('course_list.show');
 

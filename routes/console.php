@@ -40,7 +40,7 @@ Schedule::call(function () {
             foreach ($todaysCourses as $currCourse) {
 
                 $currCourse = [
-                    'course_time' => substr($currCourse->start_time,0,5),
+                    'course_time' => substr($currCourse->start_time, 0, 5),
                     'student_name' => $currStudent->student_detail->student_name . ' ' . $currStudent->student_detail->student_surname,
                     'course_topic' => $currCourse->student_course->course->course_topic,
                     'course_name' => $currCourse->student_course->course->course_name
@@ -50,22 +50,24 @@ Schedule::call(function () {
             }
         }
 
-        $maildata = [
-            'name' => $userDetails[0]->name,
-            'daily_activities' => $daily_activities,
-        ];
+        if (sizeof($daily_activities)>0) {
+            $maildata = [
+                'name' => $userDetails[0]->name,
+                'daily_activities' => $daily_activities,
+            ];
 
 
-        try {
-            //      Mail::to($validated["user_email"])->queue(new UserContact($maildata));
-            Mail::to($userDetails[0]->email)->send(new DailySchedule($maildata));
-            Log::info('Email sent successfully', ['to' => $userDetails[0]->email]);
-        } catch (TransportExceptionInterface $e) {
-            Log::error('Email failed to send', [
-                'to' => $userDetails[0]->email,
-                'error' => $e->getMessage(),
-            ]);
-            return back()->withErrors(['email' => 'E-posta gönderilemedi.']);
+            try {
+                //      Mail::to($validated["user_email"])->queue(new UserContact($maildata));
+                Mail::to($userDetails[0]->email)->send(new DailySchedule($maildata));
+                Log::info('Email sent successfully', ['to' => $userDetails[0]->email]);
+            } catch (TransportExceptionInterface $e) {
+                Log::error('Email failed to send', [
+                    'to' => $userDetails[0]->email,
+                    'error' => $e->getMessage(),
+                ]);
+                return back()->withErrors(['email' => 'E-posta gönderilemedi.']);
+            }
         }
     }
 })->dailyAt('02:00');
