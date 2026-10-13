@@ -45,7 +45,7 @@ class StudentCourseOperationsController extends Controller
         return view('dashboard', ['userStudentCourseSchedules' => $userStudentCourseSchedules, 'userStudentAuthorityRequests' => $userStudentAuthorityRequests, 'todaysCourses' => $todaysCourses, 'attendanceList' => $attendanceList]);
     }
 
-   public function getWeeklySchedule()
+    public function getWeeklySchedule()
     {
 
         $userID = Auth::id();
@@ -436,17 +436,49 @@ class StudentCourseOperationsController extends Controller
     {
         $userID = Auth::id();
 
-        $userStudents = StudentAcess::where('user_id', $userID)->get('student_detail_id');
+        $userStudents = StudentAcess::where('user_id', $userID)->pluck('student_detail_id');
 
-        $userStudentCourses = StudentCourse::whereIn('student_detail_id', $userStudents)->get('id');
+        $userStudentCourses = StudentCourse::whereIn('student_detail_id', $userStudents)->pluck('id');
 
 
-        if (in_array($studentAttendaceID, $userStudentCourses)) {
+        $attendanceList = StudentCourseStatement::find($studentAttendaceID);
+
+        if ($userStudentCourses->contains($attendanceList->student_course_id)) {
             $attendanceList = StudentCourseStatement::find($studentAttendaceID);
+            $attendanceList->amount_due = 0;
+            $attendanceList->attended_duration = 0;
+            $attendanceList->attended = -1;
+            $attendanceList->save();
         } else {
-            echo "Not in array";
+            echo $attendanceList;
+            echo "Not in array: User ID->" . $userID . " Attendance ID->" . $studentAttendaceID;
         }
+
+        return $this->getDashboard();
     }
 
-    public function coursescheduleCourseDayAccept() {}
+    public function coursescheduleCourseDayAccept(Request $request, $studentAttendaceID)
+    {
+        $userID = Auth::id();
+
+        $userStudents = StudentAcess::where('user_id', $userID)->pluck('student_detail_id');
+
+        $userStudentCourses = StudentCourse::whereIn('student_detail_id', $userStudents)->pluck('id');
+
+
+        $attendanceList = StudentCourseStatement::find($studentAttendaceID);
+
+        if ($userStudentCourses->contains($attendanceList->student_course_id)) {
+
+            $attendanceList->amount_due = $request->courseCharge;
+            $attendanceList->attended = 1;
+            $attendanceList->save();
+        } else {
+            echo $attendanceList->student_course_id;
+            print_r($userStudentCourses);
+            echo "Not in array: User ID->" . $userID . " Attendance ID->" . $studentAttendaceID;
+        }
+
+        return $this->getDashboard();
+    }
 }

@@ -35,7 +35,7 @@ Route::get('/courseschedule/{id}/day/add', [StudentCourseOperationsController::c
 Route::post('/courseschedule/{id}/day/add', [StudentCourseOperationsController::class, 'addStudentCourseDaySave'])->middleware(['auth', 'verified'])->name('add_student_course_day.save');
 
 Route::get('/courseschedule/course/{id}/reject', [StudentCourseOperationsController::class, 'coursescheduleCourseDayReject'])->middleware(['auth', 'verified'])->name('courseschedule_course_day.reject');
-Route::post('/courseschedule/course/{id}/accept', [StudentCourseOperationsController::class, 'addStudentCourseDaySave'])->middleware(['auth', 'verified'])->name('courseschedule_course_day.accept');
+Route::post('/courseschedule/course/{id}/accept', [StudentCourseOperationsController::class, 'coursescheduleCourseDayAccept'])->middleware(['auth', 'verified'])->name('courseschedule_course_day.accept');
 
 Route::get('/courses', [StudentCourseOperationsController::class, 'getCourseList'])->middleware(['auth', 'verified'])->name('course_list.show');
 

@@ -121,7 +121,7 @@ use Carbon\Carbon;
                                      <td>{{ substr($currentAttendance->course_time, 0, 5) }}
                                     </td>
                                     <td>
-                                        <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#attendaceApproveModal" data-action="{{ route('courseschedule_course_day.accept', $currentAttendance->id) }}" data-name="{{ $currentAttendance->student_course->student_detail->student_name }} {{ $currentAttendance->student_course->student_detail->student_surname }}" data-course_name="{{ $currentAttendance->student_course->course->course_name }}" data-time="{{ substr($currentAttendance->course_time, 0, 5) }}" data-date="{{ $courseDateArray[2] }}/{{ $courseDateArray[1] }}/{{ $courseDateArray[0] }}">Gitti</a>
+                                        <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#attendaceApproveModal" data-action="{{ route('courseschedule_course_day.accept', $currentAttendance->id) }}" data-name="{{ $currentAttendance->student_course->student_detail->student_name }} {{ $currentAttendance->student_course->student_detail->student_surname }}" data-course_name="{{ $currentAttendance->student_course->course->course_name }}" data-time="{{ substr($currentAttendance->course_time, 0, 5) }}" data-date="{{ $courseDateArray[2] }}/{{ $courseDateArray[1] }}/{{ $courseDateArray[0] }}"  data-course_price="{{ $currentAttendance->amount_due }}">Gitti</a>
                                         <a class="btn btn-danger" href="{{route('courseschedule_course_day.reject', $currentAttendance->id)}}">Gitmedi</a>
                                     </td>
                                 </tr>
@@ -353,20 +353,20 @@ use Carbon\Carbon;
     <div class="modal fade" id="attendaceApproveModal" tabindex="-1" aria-labelledby="attendaceApproveModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="POST">
+                <form method="POST" id="acceptForm">
                     @csrf
 
                     <div class="modal-header">
-                        <h5 class="modal-title" id="attendaceApproveModalLabel">Add Note</h5>
+                        <h5 class="modal-title" id="attendaceApproveModalLabel">Ders Katılım Onayı</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                id="title" name="title" value="{{ old('title') }}" required>
-                            @error('title')
+                            <label for="courseCharge" class="form-label" id="attendanceModalText"></label>
+                            <input type="text" class="form-control @error('courseCharge') is-invalid @enderror"
+                                id="courseCharge" name="courseCharge" value="{{ old('courseCharge') }}" required>
+                            @error('courseCharge')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -381,3 +381,14 @@ use Carbon\Carbon;
         </div>
     </div>
 </x-app-layout>
+<script>
+    document.getElementById('attendaceApproveModal').addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget; // the Accept button that was clicked
+
+        document.getElementById('acceptForm').action = button.dataset.action;
+        document.getElementById('attendanceModalText').innerHTML = button.dataset.name + ' ' + button.dataset.date + ' ' + button.dataset.time + ' tarihindeki ' + button.dataset.course_name + ' etkinliğine katıldı. Ders ücreti:' ;
+        document.getElementById('courseCharge').value = button.dataset.course_price; // clear leftovers from the previous task
+        
+    });
+</script>
+
