@@ -527,12 +527,13 @@ class StudentCourseOperationsController extends Controller
         $attendanceList = StudentCourseStatement::find($studentAttendaceID);
 
         if ($userStudentCourses->contains($attendanceList->student_course_id)) {
+            echo $attendanceList->student_course_id . "<br>" ;
             $studentCourseDetails = StudentCourse::where('id', $attendanceList->student_course_id)->get();
-            if ($studentCourseDetails->course_price_type == '1') { // Aylık
+            if ($studentCourseDetails[0]->course_price_type == '1') { // Aylık
                 $courseCharge = 0;
-            } else if ($studentCourseDetails->course_price_type == '2') { // Saatlik
+            } else if ($studentCourseDetails[0]->course_price_type == '2') { // Saatlik
                 $courseCharge = $request->courseCharge * ($attendanceList->attended_duration / 60);
-            } else if ($studentCourseDetails->course_price_type == '3') { // Ders Başı
+            } else if ($studentCourseDetails[0]->course_price_type == '3') { // Ders Başı
                 $courseCharge = $request->courseCharge;
             } else {
                 $courseCharge = 0;
