@@ -527,7 +527,7 @@ class StudentCourseOperationsController extends Controller
         $attendanceList = StudentCourseStatement::find($studentAttendaceID);
 
         if ($userStudentCourses->contains($attendanceList->student_course_id)) {
-            $studentCourseDetails = StudentCourse::where()->get();
+            $studentCourseDetails = StudentCourse::where('id', $attendanceList->student_course_id)->get();
             if ($studentCourseDetails->course_price_type == '1') { // Aylık
                 $courseCharge = 0;
             } else if ($studentCourseDetails->course_price_type == '2') { // Saatlik
