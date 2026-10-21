@@ -31,6 +31,9 @@ Route::get('/courseschedules', [StudentCourseOperationsController::class, 'getSt
 Route::get('/courseschedule/add', [StudentCourseOperationsController::class, 'addStudentCourseScreen'])->middleware(['auth', 'verified'])->name('add_student_course.show');
 Route::post('/courseschedule/add', [StudentCourseOperationsController::class, 'addStudentCourseSave'])->middleware(['auth', 'verified'])->name('add_student_course.save');
 
+Route::get('/additionalcourse/{id}/add', [StudentCourseOperationsController::class, 'addAdditionalStudentCourseScreen'])->middleware(['auth', 'verified'])->name('add_additional_student_course.show');
+Route::post('/additionalcourse/{id}/add', [StudentCourseOperationsController::class, 'addAdditionalStudentCourseSave'])->middleware(['auth', 'verified'])->name('add_additional_student_course.save');
+
 Route::get('/courseschedule/{id}/day/add', [StudentCourseOperationsController::class, 'addStudentCourseDayScreen'])->middleware(['auth', 'verified'])->name('add_student_course_day.show');
 Route::post('/courseschedule/{id}/day/add', [StudentCourseOperationsController::class, 'addStudentCourseDaySave'])->middleware(['auth', 'verified'])->name('add_student_course_day.save');
 

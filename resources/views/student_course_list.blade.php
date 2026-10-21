@@ -61,6 +61,9 @@
                                 echo '<td>';
                                 echo '    <a href="'. route('add_student_course_day.show', $currCourseID) .'" type="button" class="btn btn-success">';
                                 echo '        Yeni Kurs Günü Ekle';
+                                echo '    </a>';
+                                echo '    <a href="'. route('add_additional_student_course.show', $currCourseID) .'" type="button" class="btn btn-danger">';
+                                echo '        Ek Ders Ekle';
                                 echo '    </a></td>';
                                 echo '</tr>';
                                 $courseDays = '' ;
@@ -100,6 +103,9 @@
                                 echo '<td>';
                                 echo '    <a href="'. route('add_student_course_day.show', $currCourseID) .'" type="button" class="btn btn-success">';
                                 echo '        Yeni Kurs Günü Ekle';
+                                echo '    </a>';
+                                echo '    <a href="'. route('add_additional_student_course.show', $currCourseID) .'" type="button" class="btn btn-danger">';
+                                echo '        Ek Ders Ekle';
                                 echo '    </a></td>';
                                 echo '</tr>';
                                         error_log('4');

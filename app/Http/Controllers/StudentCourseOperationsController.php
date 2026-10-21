@@ -296,6 +296,64 @@ class StudentCourseOperationsController extends Controller
         return view('student_course_day_add', ['userCourses' => [], 'userStudents' => [],]);
     }
 
+    public function addAdditionalStudentCourseScreen($studentCourseID)
+    {
+        $userID = Auth::id();
+
+        $studentCourseDetails = StudentCourse::where('id', $studentCourseID)->get();
+                $attendanceList = StudentCourseStatement::with('student_course')->where('student_course_id', $studentCourseID)->where('attended', 1)->orderBy('course_date', 'ASC')->orderBy('course_time', 'ASC')->get();
+
+        if (sizeof($studentCourseDetails) > 0) {
+            $checkstudentAccess = StudentAcess::where('user_id', $userID)->where('student_detail_id', $studentCourseDetails[0]->student_detail_id)->get();
+            if (sizeof($checkstudentAccess) > 0) {
+                $studentDetails = StudentDetail::where('id', $studentCourseDetails[0]->student_detail_id)->get();
+
+                $curentSchedule = StudentCourseSchedule::with('student_course')->where('student_course_id', $studentCourseID)->orderBy('student_course_id', 'ASC')->orderBy('day_of_week', 'ASC')->orderBy('start_time', 'ASC')->get();
+        
+
+
+                return view('student_additional_course_day_add', ['userCourses' => $curentSchedule, 'userStudents' => $studentDetails, 'studentCourseDetails' => $studentCourseDetails, 'attendanceList' => $attendanceList]);
+            }
+        }
+
+        return view('student_additional_course_day_add', ['userCourses' => [], 'userStudents' => [], 'studentCourseDetails' => []]);
+    }
+
+    public function addAdditionalStudentCourseSave(Request $request, $studentCourseID)
+    {
+
+        $userID = Auth::id();
+
+        $studentCourseDetails = StudentCourse::where('id', $studentCourseID)->get();
+
+        if (sizeof($studentCourseDetails) > 0) {
+            $checkstudentAccess = StudentAcess::where('user_id', $userID)->where('student_detail_id', $studentCourseDetails[0]->student_detail_id)->get();
+           
+            if (sizeof($checkstudentAccess) > 0) {
+
+                $newCourseStatementLine = [
+                    'student_course_id' => $studentCourseID,
+                    'course_date' => $request->additional_course_date,
+                    'course_time' => $request->start_time,
+                    'amount_due' => $request->course_price,
+                    'amount_type' => 4,
+                    'attended_duration' => $request->duration,
+                    'attended' => 1,
+                ];
+
+                $newStatment = StudentCourseStatement::create($newCourseStatementLine);
+
+                $studentDetails = StudentDetail::where('id', $studentCourseDetails[0]->student_detail_id)->get();
+
+                $curentSchedule = StudentCourseSchedule::with('student_course')->where('student_course_id', $studentCourseID)->orderBy('student_course_id', 'ASC')->orderBy('day_of_week', 'ASC')->orderBy('start_time', 'ASC')->get();
+
+                return view('student_additional_course_day_add', ['userCourses' => $curentSchedule, 'userStudents' => $studentDetails, 'studentCourseDetails' => $studentCourseDetails]);
+            }
+        }
+
+        return view('student_additional_course_day_add', ['userCourses' => [], 'userStudents' => [], 'studentCourseDetails' => []]);
+    }
+
     public function addStudentAuthorityScreen($studentID)
     {
 
@@ -469,8 +527,18 @@ class StudentCourseOperationsController extends Controller
         $attendanceList = StudentCourseStatement::find($studentAttendaceID);
 
         if ($userStudentCourses->contains($attendanceList->student_course_id)) {
+            $studentCourseDetails = StudentCourse::where()->get();
+            if ($studentCourseDetails->course_price_type == '1') { // Aylık
+                $courseCharge = 0;
+            } else if ($studentCourseDetails->course_price_type == '2') { // Saatlik
+                $courseCharge = $request->courseCharge * ($attendanceList->attended_duration / 60);
+            } else if ($studentCourseDetails->course_price_type == '3') { // Ders Başı
+                $courseCharge = $request->courseCharge;
+            } else {
+                $courseCharge = 0;
+            }
 
-            $attendanceList->amount_due = $request->courseCharge;
+            $attendanceList->amount_due = $courseCharge;
             $attendanceList->attended = 1;
             $attendanceList->save();
         } else {

@@ -17,7 +17,7 @@
                     </x-nav-link>
                     <x-nav-link :href="route('weekly_course_list.show')" :active="request()->routeIs('weekly_course_list.show')">
                         {{ __('Haftalık Program') }}
-                    </x-nav-link>weekly_course_list
+                    </x-nav-link>
                     <x-nav-link :href="route('student_list.show')" :active="request()->routeIs('student_list.show')">
                         {{ __('Öğrenciler') }}
                     </x-nav-link>
