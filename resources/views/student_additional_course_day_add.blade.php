@@ -162,7 +162,7 @@
                                     @php
                                     error_log('1');
                                     @endphp
-                                    <td>{{ $userCourse->course_date }}
+                                    <td>{{ \Carbon\Carbon::parse($userCourse->course_date)->format('d/m/Y') }} {{ $days[\Carbon\Carbon::parse($userCourse->course_date)->dayOfWeek] }} 
                                     </td>
                                     <td>{{ $startTime->format('H:i') }} - {{ $endTime->format('H:i') }} </td>
                                     
