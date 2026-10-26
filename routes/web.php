@@ -45,6 +45,11 @@ Route::get('/courses', [StudentCourseOperationsController::class, 'getCourseList
 Route::get('/course/add', [StudentCourseOperationsController::class, 'addCourseScreen'])->middleware(['auth', 'verified'])->name('add_course.show');
 Route::post('/course/add', [StudentCourseOperationsController::class, 'addCourseSave'])->middleware(['auth', 'verified'])->name('add_course.save');
 
+Route::get('/payments', [StudentCourseOperationsController::class, 'getPaymentCourseList'])->middleware(['auth', 'verified'])->name('payment_course_list.show');
+
+Route::get('/payment/add/{id}', [StudentCourseOperationsController::class, 'addCoursePaymentScreen'])->middleware(['auth', 'verified'])->name('add_course_payment.show');
+Route::post('/payment/add/{id}', [StudentCourseOperationsController::class, 'addCoursePaymentSave'])->middleware(['auth', 'verified'])->name('add_course_payment.save');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Yeni Kurs Saati Bilgileri
+            Yeni Aktivite Saati Bilgileri
         </h2>
     </x-slot>
     @if ($errors->any())
@@ -24,13 +24,14 @@
             <div class="col-12 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 @if (sizeof($userCourses)>0)
                 <div class="row">
-                    <form action="{{ route('add_additional_student_course.save', $userCourses[0]->student_course_id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('add_additional_student_course.save', $userCourses[0]->student_course_id) }}"
+                        method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row p-3">
                             <div class="col-md-4 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Öğrenci:</b>
+                                        <b>Katılımcı:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         {{$userStudents[0]->student_name}} {{$userStudents[0]->student_surname}}
@@ -40,7 +41,7 @@
                             <div class="col-md-4 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs:</b>
+                                        <b>Aktivite:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         {{ $userCourses[0]->student_course->course->course_topic }} ({{
@@ -51,11 +52,20 @@
                             <div class="col-md-4 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs Ücreti:</b>
+                                        <b>Aktivite Ücreti:</b>
                                     </div>
                                     <div class="col-7 m-auto">
-                                        {{ $studentCourseDetails[0]->course_price }} ({{
-                                        $studentCourseDetails[0]->course_price_type }})
+                                        {{ $studentCourseDetails[0]->course_price }}
+                                        @if ($studentCourseDetails[0]->course_price_type == 1)
+                                        /Ay
+                                        @else
+                                        @if ($studentCourseDetails[0]->course_price_type == 2)
+                                        /Saat
+                                        @else
+                                        /Ders
+                                        @endif
+                                        @endif
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +74,7 @@
                             <div class="col-md-3 col-6">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs Günü:</b>
+                                        <b>Aktivite Günü:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         <input type="date" name="additional_course_date">
@@ -74,7 +84,7 @@
                             <div class="col-md-3 col-6">
                                 <div class="row">
                                     <div class="col-6 m-auto">
-                                        <b>Kurs Saati:</b>
+                                        <b>Aktivite Saati:</b>
                                     </div>
                                     <div class="col-6 m-auto">
                                         <input type="time" class="form-control" id="start_time" name="start_time"
@@ -85,7 +95,7 @@
                             <div class="col-md-3 col-6">
                                 <div class="row">
                                     <div class="col-6 m-auto">
-                                        <b>Kurs Süresi (dk.): </b>
+                                        <b>Aktivite Süresi (dk.): </b>
                                     </div>
                                     <div class="col-6 m-auto">
                                         <input type="number" class="form-control" id="duration" name="duration"
@@ -96,7 +106,7 @@
                             <div class="col-md-3 col-6">
                                 <div class="row">
                                     <div class="col-6 m-auto">
-                                        <b>Kurs Ücreti: </b>
+                                        <b>Aktivite Ücreti: </b>
                                     </div>
                                     <div class="col-6 m-auto">
                                         <input type="number" class="form-control" id="course_price" name="course_price"
@@ -105,7 +115,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row p-3">
                             <div class="offset-md-4 col-md-4 col-12">
                                 <button type="submit" class="btn btn-success" style="width: 100%">
@@ -130,13 +140,13 @@
     7 => 'Pazar',
     ];
     @endphp
-     <div class="container">
+    <div class="container">
         <div class="row p-3">
             <div class="col-12 text-center">
                 <h4 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Katılım Detayları</h4>
             </div>
         </div>
-     </div>
+    </div>
     <div class="container">
         <div class="row p-3">
             <div class="col-12 p-5">
@@ -146,26 +156,28 @@
                         <table id="student_course_details_list_table" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Kurs Günü</th>
-                                    <th>Kurs Saati</th>
-                                   
+                                    <th>Aktivite Günü</th>
+                                    <th>Aktivite Saati</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($attendanceList as $userCourse)
                                 @php
-                                     $startTime = \Carbon\Carbon::createFromFormat('H:i:s', $userCourse->course_time);
-                                     $endTime  = \Carbon\Carbon::createFromFormat('H:i:s', $userCourse->course_time)->addMinutes($userCourse->attended_duration);
-;
+                                $startTime = \Carbon\Carbon::createFromFormat('H:i:s', $userCourse->course_time);
+                                $endTime = \Carbon\Carbon::createFromFormat('H:i:s',
+                                $userCourse->course_time)->addMinutes($userCourse->attended_duration);
+                                ;
                                 @endphp
                                 <tr onclick="">
                                     @php
                                     error_log('1');
                                     @endphp
-                                    <td>{{ \Carbon\Carbon::parse($userCourse->course_date)->format('d/m/Y') }} {{ $days[\Carbon\Carbon::parse($userCourse->course_date)->dayOfWeek] }} 
+                                    <td>{{ \Carbon\Carbon::parse($userCourse->course_date)->format('d/m/Y') }} {{
+                                        $days[\Carbon\Carbon::parse($userCourse->course_date)->dayOfWeek] }}
                                     </td>
                                     <td>{{ $startTime->format('H:i') }} - {{ $endTime->format('H:i') }} </td>
-                                    
+
                                 </tr>
                                 @php
                                 error_log('4');
@@ -174,7 +186,7 @@
                             </tbody>
                         </table>
                         @else
-                        <h4>Sizin listenize kayıtlı öğrenci yok.</h4>
+                        <h4>Sizin listenize kayıtlı katılımcı yok.</h4>
                         @endif
                     </div>
                 </div>

@@ -5,7 +5,7 @@ use Carbon\Carbon;
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Kurs Programı İşlemleri') }}
+            {{ __('Aktivite Programı İşlemleri') }}
         </h2>
     </x-slot>
 
@@ -14,12 +14,12 @@ use Carbon\Carbon;
             <div class="col-12 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="row">
                     <div class="col-4 p-6 text-gray-900 dark:text-gray-100">
-                        Kurs Programı:
+                        Aktivite Programı:
                     </div>
                     <div class="offset-md-6 col-2 p-6 text-gray-900 dark:text-gray-100">
                         <button onclick="window.location.href='{{ route('student_course_list.show') }}'" type="button"
                             class="btn btn-success">
-                            Kurs Saati Ekle
+                            Aktivite Saati Ekle
                         </button>
                     </div>
                 </div>
@@ -31,7 +31,7 @@ use Carbon\Carbon;
         <div class="container pt-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2>Kayıtlı Öğrenci Listesi</h2>
+                <h2>Kayıtlı Katılımcı Listesi</h2>
             </div>
         </div>
     </div>
@@ -44,8 +44,8 @@ use Carbon\Carbon;
                         <table id="student_details_list_table" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Öğrenci Adı</th>
-                                    <th>Öğrenci Soyadı</th>
+                                    <th>Katılımcı Adı</th>
+                                    <th>Katılımcı Soyadı</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -82,7 +82,7 @@ use Carbon\Carbon;
         <div class="container pt-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2>Kayıtlı Öğrenci Listesi</h2>
+                <h2>Kayıtlı Katılımcı Listesi</h2>
             </div>
         </div>
     </div>
@@ -95,11 +95,11 @@ use Carbon\Carbon;
                         <table id="student_attendance_list_table" class="display" style="width:100%">
                              <thead>
                                 <tr>
-                                    <th>Öğrenci Adı</th>
-                                    <th>Kurs Adı</th>
-                                    <th>Kurs Veren</th>
-                                    <th>Kurs Tarihi</th>
-                                    <th>Kurs Saati</th>
+                                    <th>Katılımcı Adı</th>
+                                    <th>Aktivite Adı</th>
+                                    <th>Aktivite Veren</th>
+                                    <th>Aktivite Tarihi</th>
+                                    <th>Aktivite Saati</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -143,7 +143,7 @@ use Carbon\Carbon;
         <div class="container pt-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2>Bugünkü Kurslar</h2>
+                <h2>Bugünkü Aktiviteler</h2>
             </div>
         </div>
     </div>
@@ -156,10 +156,10 @@ use Carbon\Carbon;
                         <table id="todays_courses_list_table" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Kurs Saati</th>
-                                    <th>Öğrenci Adı</th>
-                                    <th>Kurs Adı</th>
-                                    <th>Kurs Veren</th>
+                                    <th>Aktivite Saati</th>
+                                    <th>Katılımcı Adı</th>
+                                    <th>Aktivite Adı</th>
+                                    <th>Aktivite Veren</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -342,7 +342,7 @@ use Carbon\Carbon;
                                 </div>
                             </div>
                         @else
-                            <h4>Sizin listenize kayıtlı kurs programı yok.</h4>
+                            <h4>Sizin listenize kayıtlı aktivite programı yok.</h4>
                         @endif
                     </div>
                 </div>

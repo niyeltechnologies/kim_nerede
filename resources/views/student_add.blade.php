@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Yeni Öğrenci Bilgileri
+            Yeni Katılımcı Bilgileri
         </h2>
     </x-slot>
     @if ($errors->any())
@@ -30,7 +30,7 @@
                             <div class="col-md-6 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Öğrenci İsmi:</b>
+                                        <b>Katılımcı İsmi:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                       <input type="text" class="form-control" id="student_name"
@@ -41,7 +41,7 @@
                             <div class="col-md-6 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Öğrenci Soyismi:</b>
+                                        <b>Katılımcı Soyismi:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                        <input type="text" class="form-control" id="student_surname"

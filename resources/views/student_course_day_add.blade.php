@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Yeni Kurs Saati Bilgileri
+            Yeni Aktivite Saati Bilgileri
         </h2>
     </x-slot>
     @if ($errors->any())
@@ -30,7 +30,7 @@
                             <div class="col-md-6 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Öğrenci:</b>
+                                        <b>Katılımcı:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         {{$userStudents[0]->student_name}} {{$userStudents[0]->student_surname}}
@@ -40,7 +40,7 @@
                             <div class="col-md-6 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs:</b>
+                                        <b>Aktivite:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         {{ $userCourses[0]->student_course->course->course_topic }} ({{
@@ -53,7 +53,7 @@
                             <div class="col-md-4 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs Günü:</b>
+                                        <b>Aktivite Günü:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         <select class="form-control" name="day_of_week">
@@ -71,7 +71,7 @@
                             <div class="col-md-4 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs Saati:</b>
+                                        <b>Aktivite Saati:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         <input type="time" class="form-control" id="start_time" name="start_time"
@@ -82,7 +82,7 @@
                             <div class="col-md-4 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs Süresi (dk.): </b>
+                                        <b>Aktivite Süresi (dk.): </b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         <input type="number" class="form-control" id="duration" name="duration"
@@ -125,8 +125,8 @@
                         <table id="student_course_details_list_table" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Kurs Günü</th>
-                                    <th>Kurs Saati</th>
+                                    <th>Aktivite Günü</th>
+                                    <th>Aktivite Saati</th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -155,7 +155,7 @@
                             </tbody>
                         </table>
                         @else
-                        <h4>Sizin listenize kayıtlı öğrenci yok.</h4>
+                        <h4>Sizin listenize kayıtlı katılımcı yok.</h4>
                         @endif
                     </div>
                 </div>

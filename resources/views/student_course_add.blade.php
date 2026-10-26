@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Yeni Kurs Saati Bilgileri
+            Yeni Aktivite Saati Bilgileri
         </h2>
     </x-slot>
     @if ($errors->any())
@@ -29,7 +29,7 @@
                             <div class="col-md-6 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Öğrenci:</b>
+                                        <b>Katılımcı:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         <select class="form-control" name="student_detail_id">
@@ -43,7 +43,7 @@
                             <div class="col-md-6 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs:</b>
+                                        <b>Aktivite:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         <select class="form-control" name="course_id">
@@ -59,7 +59,7 @@
                             <div class="col-md-4 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs Günü:</b>
+                                        <b>Aktivite Günü:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                        <select class="form-control" name="day_of_week">
@@ -76,7 +76,7 @@
                             </div><div class="col-md-4 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs Saati:</b>
+                                        <b>Aktivite Saati:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         <input type="time" class="form-control" id="start_time"
@@ -87,7 +87,7 @@
                             <div class="col-md-4 col-12">
                                  <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs Süresi (dk.): </b>
+                                        <b>Aktivite Süresi (dk.): </b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         <input type="number" class="form-control" id="duration"
@@ -100,7 +100,7 @@
                             <div class="col-md-4 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Kurs Ücreti:</b>
+                                        <b>Aktivite Ücreti:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         <input type="number" class="form-control" id="course_price"

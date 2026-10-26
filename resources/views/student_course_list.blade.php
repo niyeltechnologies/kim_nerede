@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Kurs Programı İşlemleri') }}
+            {{ __('Aktivite Programı İşlemleri') }}
         </h2>
     </x-slot>
 
@@ -11,12 +11,12 @@
                 <div class="row">
 
                     <div class="col-4 p-6 text-gray-900 dark:text-gray-100">
-                        Kurs Programı:
+                        Aktivite Programı:
                     </div>
                     <div class="offset-md-6 col-2 p-6 text-gray-900 dark:text-gray-100">
                         <button onclick="window.location.href='{{ route('add_student_course.show') }}'" type="button"
                             class="btn btn-success">
-                            Yeni Kurs Ekle
+                            Yeni Aktivite Ekle
                         </button>
                     </div>
                 </div>
@@ -33,8 +33,8 @@
                         <table id="student_courses_list_table" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Kurs İsmi</th>
-                                    <th>Öğrenci İsmi</th>
+                                    <th>Aktivite İsmi</th>
+                                    <th>Katılımcı İsmi</th>
                                     <th>Ücret</th>
                                     <th>Günler</th>
                                     <th></th>
@@ -60,7 +60,7 @@
                                 echo '<td>' . $courseDays . '</td>';
                                 echo '<td>';
                                 echo '    <a href="'. route('add_student_course_day.show', $currCourseID) .'" type="button" class="btn btn-success">';
-                                echo '        Yeni Kurs Günü Ekle';
+                                echo '        Yeni Aktivite Günü Ekle';
                                 echo '    </a>';
                                 echo '    <a href="'. route('add_additional_student_course.show', $currCourseID) .'" type="button" class="btn btn-danger">';
                                 echo '        Ek Ders Ekle';
@@ -102,7 +102,7 @@
                                 echo '<td>' . $courseDays . '</td>';
                                 echo '<td>';
                                 echo '    <a href="'. route('add_student_course_day.show', $currCourseID) .'" type="button" class="btn btn-success">';
-                                echo '        Yeni Kurs Günü Ekle';
+                                echo '        Yeni Aktivite Günü Ekle';
                                 echo '    </a>';
                                 echo '    <a href="'. route('add_additional_student_course.show', $currCourseID) .'" type="button" class="btn btn-danger">';
                                 echo '        Ek Ders Ekle';
@@ -114,7 +114,7 @@
                             </tbody>
                         </table>
                         @else
-                        <h4>Sizin listenize kayıtlı kurs programı yok.</h4>
+                        <h4>Sizin listenize kayıtlı aktivite programı yok.</h4>
                         @endif
                     </div>
                 </div>

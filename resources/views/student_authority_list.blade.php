@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Öğrenci Yetki Bilgileri
+            Katılımcı Yetki Bilgileri
         </h2>
     </x-slot>
     @if ($errors->any())
@@ -29,7 +29,7 @@
                             <div class="col-md-6 col-12">
                                 <div class="row">
                                     <div class="col-5 m-auto">
-                                        <b>Öğrenci:</b>
+                                        <b>Katılımcı:</b>
                                     </div>
                                     <div class="col-7 m-auto">
                                         {{$studentDetails[0]->student_name}} {{$studentDetails[0]->student_surname}}
@@ -95,7 +95,7 @@
                             </tbody>
                         </table>
                         @else
-                        <h4>Sizin listenize kayıtlı öğrenci yok.</h4>
+                        <h4>Sizin listenize kayıtlı katılımcı yok.</h4>
                         @endif
                     </div>
                 </div>

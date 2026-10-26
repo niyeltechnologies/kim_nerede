@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Öğrenci İşlemleri') }}
+            {{ __('Katılımcı İşlemleri') }}
         </h2>
     </x-slot>
 
@@ -10,11 +10,11 @@
             <div class="col-12 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="row">
                 <div class="col-4 p-6 text-gray-900 dark:text-gray-100">
-                    Öğrenciler:
+                    Katılımcıler:
                 </div>
                  <div class="offset-md-6 col-2 p-6 text-gray-900 dark:text-gray-100">
                    <button onclick="window.location.href='{{ route('add_student.show') }}'" type="button" class="btn btn-success">
-                    Öğrenci Ekle
+                    Katılımcı Ekle
                    </button>
                 </div>
                 </div>
@@ -24,7 +24,7 @@
     <div class="container pt-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2>Kayıtlı Öğrenci Listesi</h2>
+                <h2>Kayıtlı Katılımcı Listesi</h2>
             </div>
         </div>
     </div>
@@ -37,8 +37,8 @@
                         <table id="student_details_list_table" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Öğrenci Adı</th>
-                                    <th>Öğrenci Soyadı</th>
+                                    <th>Katılımcı Adı</th>
+                                    <th>Katılımcı Soyadı</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -65,7 +65,7 @@
                             </tbody>
                         </table>
                         @else
-                        <h4>Sizin listenize kayıtlı öğrenci yok.</h4>
+                        <h4>Sizin listenize kayıtlı katılımcı yok.</h4>
                         @endif
                     </div>
                 </div>

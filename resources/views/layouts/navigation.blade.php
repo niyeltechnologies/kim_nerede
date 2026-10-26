@@ -19,13 +19,16 @@
                         {{ __('Haftalık Program') }}
                     </x-nav-link>
                     <x-nav-link :href="route('student_list.show')" :active="request()->routeIs('student_list.show')">
-                        {{ __('Öğrenciler') }}
+                        {{ __('Katılımcıler') }}
                     </x-nav-link>
                     <x-nav-link :href="route('course_list.show')" :active="request()->routeIs('course_list.show')">
-                        {{ __('Kurslar') }}
+                        {{ __('Aktiviteler') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('student_course_list.show')" :active="request()->routeIs('student_course_list')">
-                        {{ __('Kurs Saatleri') }}
+                    <x-nav-link :href="route('student_course_list.show')" :active="request()->routeIs('student_course_list.show')">
+                        {{ __('Aktivite Saatleri') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('payment_course_list.show')" :active="request()->routeIs('payment_course_list.show')">
+                        {{ __('Ödemeler') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -51,7 +54,7 @@
                         </x-dropdown-link>
 
                         <x-dropdown-link :href="route('student_authority_list.show')">
-                            {{ __('Öğrenci Paylaşımları') }}
+                            {{ __('Katılımcı Paylaşımları') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
